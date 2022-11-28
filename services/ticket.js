@@ -21,17 +21,22 @@ module.exports.createTicket = async (ticketInfo) => {
     }
 }
 
+// TODO: Add validation to check if the user is the owner of the ticket
 module.exports.getTickets = async (userId) => {
     try {
         const tickets = await TicketModel.find({
             Owner: userId
         });
+
         return tickets;
     }catch(err){
         throw new Error("Error while getting tickets");
     }
 }   
 
+// TODO: Add validation to check if the user is the owner of the ticket
+
+// The main concept of this function is to get ticket info by ID
 module.exports.getTicket = async (ticketId) => {
     try {
         const ticket = await TicketModel.findOne({
@@ -43,6 +48,7 @@ module.exports.getTicket = async (ticketId) => {
     }
 }
 
+// TODO: Add validation to check if the user is the owner of the ticket
 module.exports.AddComment = async (commentInfo) => {
     try {
         const { message, Owner, Ticket } = commentInfo;
@@ -59,6 +65,7 @@ module.exports.AddComment = async (commentInfo) => {
     }
 }
 
+// TOOD: Add validation to check if the user is the owner of the ticket
 module.exports.getComments = async (ticketId) => {
     try {
         const comments = await CommentModel.find({
@@ -70,6 +77,7 @@ module.exports.getComments = async (ticketId) => {
     }
 }
 
+// TODO: Add validation to check if the user is the owner of the ticket
 model.export.deleteComment = async (commentId) => {
     try {
         const comment = await CommentModel.findOne({
@@ -81,6 +89,7 @@ model.export.deleteComment = async (commentId) => {
     }
 }
 
+// TODO: Add validation to check if the user is the owner of the ticket
 model.export.updateComment = async (commentId, message) => {
     try {
         const comment = await CommentModel.findOne({
@@ -92,3 +101,4 @@ model.export.updateComment = async (commentId, message) => {
         throw new Error("Error while updating comment");
     }
 }
+

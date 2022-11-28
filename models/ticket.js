@@ -28,16 +28,16 @@ const TicketSchema = new Schema({
         ref: 'User',
         required: true
     },
-    Ticket: {
-        type: Schema.Types.ObjectId,
-        ref: 'Ticket',
-        required: true
-    },
     Priority: {
         type: 'String',
         enum: ['low', 'medium', 'high'],
         required: true,
         default: 'low'
+    },
+    Assignedto: {
+        type: Schema.Types.ObjectId,
+        ref: 'User',
+        default: null
     }
 });
 

@@ -27,3 +27,12 @@ module.exports.validatePasswordData = () => {
     ];
     return validationMiddlewares;
 }
+
+module.exports.validateLoginData = () => {
+ 
+    const validationMiddlewares = [
+        check('email').isEmail().withMessage('Email is not valid'),
+        check('password').notEmpty().withMessage('Password cannot be empty'),
+    ];
+    return validationMiddlewares;
+}

@@ -40,6 +40,7 @@ module.exports.getTickets = async (req, res) => {
 
 module.exports.getTicket = async (req, res) => {
     try {
+        // TODO Authorize user to see if he is the owner of the ticket
         const ticketId = req.params.ticketId;
         const ticket = await TicketService.getTicket(ticketId);
         res.status(200).json({
@@ -99,4 +100,28 @@ module.exports.deleteComment = async (req, res) => {
             error: err.message
     });
     }
+}
+
+module.exports.updateComment = async (req,res) => {
+    const errors = validationResult(req).array;
+    
+    if(errors.length > 0){
+        return res.status(422).send({
+            error: errors[0].msg
+        });
+    }else{
+    try{
+
+        const { newMessage, commentId }  = req.params;
+        await TicketService.updateComment(commentId,newMessage);
+        res.status(200).json({
+            message: "Comment updated Succesfully"
+        });
+
+    }catch(error){
+        res.status(500).send({
+            error: error.message
+        });
+    }
+}
 }

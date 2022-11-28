@@ -1,5 +1,6 @@
 const bcrypt = require('bcrypt');
 
+const JWT = require('jsonwebtoken');
 const UserModel = require('../models/User');
 
 module.exports.registerCustomer = async (customerInfo) => {
@@ -74,4 +75,38 @@ module.exports.updatePassword = async (passwordInfo) => {
     }catch(err){
         throw err.message;
     }
+};
+
+module.exports.checkCredentials = async (email,password) => {
+    try{ 
+        const user = await UserModel.findOne({
+            email: email
+        });
+        let isCorrectPassword = await bcrypt.compare(password, user.password);
+        if(isCorrectPassword){
+            return user;
+        }else{
+            return null;
+        }
+    }catch(err){
+        throw new Error("Error while checking credentials");
+    }
+};
+
+module.exports.generateJWT = (user) => {
+try{
+    const payload = {
+        userId: user._id,
+        userType: user.userType,
+        email: user.email
+    };
+
+    const token = JWT.sign(payload, process.env.JWT_SECRET, {
+        expiresIn: '1h'
+    });
+
+    return token;
+}catch(err){
+    throw err.message;
+}
 };

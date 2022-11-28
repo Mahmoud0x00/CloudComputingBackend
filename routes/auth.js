@@ -9,5 +9,8 @@ CustomerValidator.validateCustomerData(),
 authenticationController.postUser);
 
 
+authenitcationRouter.post('/login',
+CustomerValidator.validateLoginData(),
+authenticationController.login);
 
 module.exports = authenitcationRouter;
