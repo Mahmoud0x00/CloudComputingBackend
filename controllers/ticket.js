@@ -1,7 +1,7 @@
 const TicketService = require('../services/ticket');
 
 const { validationResult } = require('express-validator');
-
+const jwt = require('jsonwebtoken');
 module.exports.postTicket = async (req, res) => {
     const errors = validationResult(req).array();
     if(errors.length > 0){
@@ -10,9 +10,11 @@ module.exports.postTicket = async (req, res) => {
         });
     }else{
     try {
-        // TODO: replace userID with the actutal userID from JWT token
-        const { userId, title, description } = req.body;
-        await TicketService.createTicket({title, description, status: "Open", Owner: userId});
+        const userId = jwt.verify(req.headers.authorization.split(' ')[1], process.env.JWT_SECRET).userId;
+        const { title, description } = req.body;
+        console.log(title);
+        console.log(description);
+        await TicketService.createTicket(title, description,userId);
         res.status(201).json({
             message: "Ticket created successfully"});
     }catch(err){
@@ -26,7 +28,7 @@ module.exports.postTicket = async (req, res) => {
 module.exports.getTickets = async (req, res) => {
     try {
         // TODO: replace userID with the actutal userID from JWT token
-        const userId = req.params.userId;
+        const userId = jwt.verify(req.headers.authorization.split(' ')[1], process.env.JWT_SECRET).userId;
         const tickets = await TicketService.getTickets(userId);
         res.status(200).json({
             tickets: tickets
@@ -62,8 +64,9 @@ module.exports.postComment = async (req, res) => {
     }else{
     try {
         // TODO: replace userID with the actutal userID from JWT token
-        const { userId, ticketId, message } = req.body;
-        await TicketService.AddComment({message, Owner: userId, Ticket: ticketId});
+        const userId = jwt.verify(req.headers.authorization.split(' ')[1], process.env.JWT_SECRET).userId;
+        const {ticketId, comment, type } = req.body;
+        await TicketService.AddComment(req,comment,userId,ticketId,type);
         res.status(201).json({
             message: "Comment added successfully"});
     }catch(err){
@@ -77,7 +80,7 @@ module.exports.postComment = async (req, res) => {
 module.exports.getComments = async (req, res) => {
     try {
         const ticketId = req.params.ticketId;
-        const comments = await TicketService.getComments(ticketId);
+        const comments = await TicketService.getComments(req,ticketId);
         res.status(200).json({
             comments: comments
         });
@@ -103,17 +106,12 @@ module.exports.deleteComment = async (req, res) => {
 }
 
 module.exports.updateComment = async (req,res) => {
-    const errors = validationResult(req).array;
-    
-    if(errors.length > 0){
-        return res.status(422).send({
-            error: errors[0].msg
-        });
-    }else{
-    try{
 
-        const { newMessage, commentId }  = req.params;
-        await TicketService.updateComment(commentId,newMessage);
+    try{
+        const commentId = req.params.commentId;
+        const { newMessage }  = req.body;
+        const userId = jwt.verify(req.headers.authorization.split(' ')[1], process.env.JWT_SECRET).userId;
+        await TicketService.updateComment(userId,commentId,newMessage);
         res.status(200).json({
             message: "Comment updated Succesfully"
         });
@@ -124,4 +122,38 @@ module.exports.updateComment = async (req,res) => {
         });
     }
 }
+
+module.exports.postAttachment = async (req, res) => {
+    try{
+        if(req.fileValidationError){
+            throw new Error(req.fileValidationError);
+        }
+        const filenPath = req.file.path;
+        const fileName = req.file.filename;
+        const ticketId = req.params.ticketId;
+        const userId = jwt.verify(req.headers.authorization.split(' ')[1], process.env.JWT_SECRET).userId;
+            
+            await TicketService.addAttachment(ticketId, fileName,filenPath,userId);
+            res.status(201).json({
+                message: "Attachment added successfully"
+            });
+    }catch(error){
+        res.status(500).send({
+            error: error.message
+        });
+    }
+}
+
+module.exports.getAttachments = async (req, res) => {
+    try {
+        const ticketId = req.params.ticketId;
+        const userId = jwt.verify(req.headers.authorization.split(' ')[1], process.env.JWT_SECRET).userId;
+        const userType = jwt.verify(req.headers.authorization.split(' ')[1], process.env.JWT_SECRET).userType;
+        const attachments = await TicketService.findAttachments(userId,userType,ticketId);
+        res.status(200).json(attachments);
+    }catch(err){
+        res.status(500).send({
+            error: err.message
+    });
+    }
 }

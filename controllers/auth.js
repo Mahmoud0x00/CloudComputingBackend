@@ -2,6 +2,7 @@ const AuthenticationService = require('../services/auth');
 
 const { validationResult } = require('express-validator');
 
+const jwt = require('jsonwebtoken');
 
 module.exports.postUser = async (req, res) => {
     const errors = validationResult(req).array();
@@ -37,8 +38,8 @@ module.exports.editUser = async (req, res) => {
         });
     }else{
     try {
-        // TODO: replace userID with the actutal userID from JWT token
-        const { userId,name, email } = req.body;
+        const userId = jwt.verify(req.headers.authorization.split(' ')[1], process.env.JWT_SECRET).userId;
+        const { name, email } = req.body;
         const doesCustomerExist = await AuthenticationService.doesCustomerExist(email); 
         if(doesCustomerExist){
             res.status(400).json({
@@ -64,8 +65,8 @@ module.exports.updatePassword = async (req, res) => {
         });
     }else{
     try {
-        // TODO: replace userID with the actutal userID from JWT token
-        const { userId, password } = req.body;
+        const userId = jwt.verify(req.headers.authorization.split(' ')[1], process.env.JWT_SECRET).userId;
+        const {password } = req.body;
         await AuthenticationService.updatePassword({userId, password});
         res.status(201).json({
             message: "Password updated successfully"});
@@ -87,7 +88,6 @@ module.exports.login = async (req, res) => {
     }else{
         try {
             const { email, password } = req.body;
-            
             const user = await AuthenticationService.checkCredentials(email, password);
             if(user){
                 const token = await AuthenticationService.generateJWT(user);
@@ -102,9 +102,26 @@ module.exports.login = async (req, res) => {
             }
         } catch(err){
             res.status(500).send({
-                error: "Error while checking credentials at login"
+                error: err.message
         });
     }
     }
 };
 
+module.exports.getUser = async (req,res) => {
+    try{
+    const token = req.headers.authorization.split(' ')[1];
+    const user = await AuthenticationService.getUserInfo(token);
+    if(user){
+        res.status(200).json(user);
+    }else{
+        res.status(401).json({
+            message: "Invalid token"
+        });
+    }
+    }catch(err){
+        res.status(500).send({
+            error: err.message
+    });
+    }
+};

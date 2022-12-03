@@ -18,6 +18,7 @@ module.exports.validateCommentData = () => {
     return validationMiddlewares;
 }
 
+
 module.exports.validateEditTicketData = () => {
     const validationMiddlewares = [
         check('title').notEmpty().withMessage('Title cannot be empty'),

@@ -2,6 +2,8 @@ const TicketController = require('../controllers/ticket');
 
 const ticketValidator = require('../validators/ticket');
 
+const uploads = require('../middleware/upload');
+
 const {Router} = require('express');
 
 const ticketRouter = Router();
@@ -13,10 +15,10 @@ ticketRouter.post('/create',isAuthenticated,
 ticketValidator.validateTicketData(),
 TicketController.postTicket);
 
-ticketRouter.get('/get/:userId',isAuthenticated,
+ticketRouter.get('/getUserTickets',isAuthenticated,
 TicketController.getTickets);
 
-ticketRouter.get('/get/:ticketId',isAuthenticated,
+ticketRouter.get('/retrive/:ticketId',isAuthenticated,
 TicketController.getTicket);
 
 ticketRouter.post('/comment',isAuthenticated,
@@ -26,11 +28,16 @@ TicketController.postComment);
 ticketRouter.get('/comments/:ticketId',isAuthenticated,
 TicketController.getComments);
 
-ticketRouter.put('/comment/update',isAuthenticated,
-ticketValidator.validateCommentData(),
+ticketRouter.put('/comment/:commentId',isAuthenticated,
 TicketController.updateComment);
 
-ticketRouter.delete('/comment/delete/:commentId',isAuthenticated,
+ticketRouter.delete('/comment/:commentId',isAuthenticated,
 TicketController.deleteComment);
 
+ticketRouter.post('/:ticketId/attachment',isAuthenticated, 
+uploads,
+TicketController.postAttachment);
+
+ticketRouter.get('/:ticketId/attachments',isAuthenticated,
+TicketController.getAttachments);
 module.exports = ticketRouter;

@@ -14,4 +14,7 @@ userRouter.post('/update-password',isAuthenticated,
 CustomerValidator.validatePasswordData(),
 authenticationController.updatePassword);
 
+userRouter.get('/getUser',isAuthenticated,
+authenticationController.getUser);
+
 module.exports = userRouter;

@@ -1,5 +1,6 @@
 const express = require('express');
 const dotenv = require('dotenv');
+const path = require('path');
 const cors = require('cors');
 const helmet = require('helmet');
 // import the function that ininitiates a DB connection.
@@ -19,9 +20,12 @@ const app = express();
 
 
 // an express middleware to parse JSON data in request body.
+app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(helmet());
+app.use(cors());
 
+app.use('/uploads/attachments', express.static(path.join(__dirname,'uploads', 'attachments')));
 app.use(cors());
 
 app.use('/api/auth', authenitcationRouter);

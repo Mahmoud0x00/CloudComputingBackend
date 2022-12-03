@@ -82,9 +82,13 @@ module.exports.checkCredentials = async (email,password) => {
         const user = await UserModel.findOne({
             email: email
         });
-        let isCorrectPassword = await bcrypt.compare(password, user.password);
-        if(isCorrectPassword){
-            return user;
+        if(user){
+            let isCorrectPassword = await bcrypt.compare(password, user.password);
+            if(isCorrectPassword){
+                return user;
+            }else{
+                return null;
+            }
         }else{
             return null;
         }
@@ -109,4 +113,20 @@ try{
 }catch(err){
     throw err.message;
 }
+};
+
+module.exports.getUserInfo = async (token) => {
+    try{
+        const userId = JWT.verify(token, process.env.JWT_SECRET).userId;
+        const user = await UserModel.findOne({
+            _id: userId
+        }).select('-password -__v -_id');
+        if(user){
+            return user;
+        }else{
+            return null;
+        }
+    }catch(err){
+        throw err.message;
+    }
 };
