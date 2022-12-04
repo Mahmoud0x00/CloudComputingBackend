@@ -126,11 +126,11 @@ module.exports.findAttachments = async (userId,userType,ticketId) => {
         attachments = await AttachementModel.find({
             Ticket: ticketId,
             Owner: {$eq: userId}
-        }).select('-__v -Ticket -Owner -_id');
+        }).select('-__v -Ticket -_id').populate('Owner','-__v -_id -password -email -userType -creationDate -UpdatedDate');;
     }else{
         attachments = await AttachementModel.find({
             Ticket: ticketId
-        }).select('-__v -Ticket');
+        }).select('-__v -Ticket').populate('Owner','-__v -_id -password -email -userType -creationDate -UpdatedDate');
     }
     return attachments;
 } catch(err){
