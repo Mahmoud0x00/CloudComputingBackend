@@ -157,3 +157,18 @@ module.exports.getAttachments = async (req, res) => {
     });
     }
 }
+
+module.exports.deleteAttachment = async (req, res) => {
+    try {
+        const attachmentId = req.params.attachmentId;
+        const userId = jwt.verify(req.headers.authorization.split(' ')[1], process.env.JWT_SECRET).userId;
+        await TicketService.deleteAttachment(userId,attachmentId);
+        res.status(200).json({
+            message: "Attachment deleted successfully"
+        });
+    }catch(err){
+        res.status(500).send({
+            error: err.message
+    });
+    }
+}

@@ -2,7 +2,7 @@
 const TicketModel = require('../models/ticket');
 
 const AttachementModel = require('../models/attachment');
-
+const fs = require('fs');
 const jwt = require('jsonwebtoken');
 const CommentModel = require('../models/comment');
 module.exports.createTicket = async (title,description,userId) => {
@@ -137,4 +137,17 @@ module.exports.findAttachments = async (userId,userType,ticketId) => {
     throw new Error("Error while getting attachments");
 }
 
+}
+
+module.exports.deleteAttachment = async (userId,attachmentId) => {
+        const attachment = await AttachementModel.findById({
+            _id: attachmentId,
+            Owner: {$eq: userId}
+        });
+        if(attachment){
+            fs.unlinkSync(attachment.url);
+            await attachment.delete();
+        }else{
+            throw new Error("Attachment not found");
+        }
 }
