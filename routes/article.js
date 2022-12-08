@@ -13,7 +13,8 @@ const isAuthenticated = require('../middleware/auth');
 
 
 
-articleRouter.post('/postArticle',isAuthenticated ,articleController.postArticle);
+articleRouter.post('/postArticle',isAuthenticated,
+articleController.postArticle);
 articleRouter.get('/getArticles', articleController.getArticles);
   
 articleRouter.put('/updateArticle', isAuthenticated ,articleController.updateArticle);

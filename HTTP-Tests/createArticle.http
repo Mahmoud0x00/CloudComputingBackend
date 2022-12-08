@@ -1,5 +1,6 @@
 POST http://localhost:9000/api/article/postArticle
 Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2MzhhMzY5NmViOWRjZGViYTEwNjM5OWEiLCJ1c2VyVHlwZSI6ImN1c3RvbWVyIiwiZW1haWwiOiJtYWhtb3VkZGRAdXNlcnMuY29tIiwiaWF0IjoxNjcwNDg4NTAxLCJleHAiOjE2NzA0OTIxMDF9.kVROuMrKkVeQ8l9ONVBGz85_kEhyLPnt8U9nPwTKeXs
 
 {
 "title" : "Article 1",

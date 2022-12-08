@@ -1,4 +1,5 @@
 const articleService = require('../services/articles');
+const jwt = require('jsonwebtoken');
 
 module.exports.getArticles = async (req, res) => {
     try {
