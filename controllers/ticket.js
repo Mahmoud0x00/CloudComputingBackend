@@ -27,7 +27,6 @@ module.exports.postTicket = async (req, res) => {
 
 module.exports.getTickets = async (req, res) => {
     try {
-        // TODO: replace userID with the actutal userID from JWT token
         const userId = jwt.verify(req.headers.authorization.split(' ')[1], process.env.JWT_SECRET).userId;
         const tickets = await TicketService.getTickets(userId);
         res.status(200).json({
@@ -44,7 +43,8 @@ module.exports.getTicket = async (req, res) => {
     try {
         // TODO Authorize user to see if he is the owner of the ticket
         const ticketId = req.params.ticketId;
-        const ticket = await TicketService.getTicket(ticketId);
+        const userId = jwt.verify(req.headers.authorization.split(' ')[1], process.env.JWT_SECRET).userId;
+        const ticket = await TicketService.getTicket(userId,ticketId);
         res.status(200).json({
             ticket: ticket
         });

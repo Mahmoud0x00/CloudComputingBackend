@@ -16,7 +16,7 @@ module.exports.postUser = async (req, res) => {
         const doesCustomerExist = await AuthenticationService.doesCustomerExist(email);
         if(doesCustomerExist){
             res.status(400).json({
-                message: "User already exists"});
+                error: "User already exists"});
         }else{
             await AuthenticationService.registerCustomer({name, email, password});
             res.status(201).json({

@@ -31,10 +31,11 @@ module.exports.getTickets = async (userId) => {
 // TODO: Add validation to check if the user is the owner of the ticket
 
 // The main concept of this function is to get ticket info by ID
-module.exports.getTicket = async (ticketId) => {
+module.exports.getTicket = async (userId,ticketId) => {
     try {
         const ticket = await TicketModel.findOne({
-            _id: ticketId
+            _id: ticketId,
+            Owner: {$eq: userId}
             });
         return ticket;
     }catch(err){
