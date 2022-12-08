@@ -1,0 +1,5 @@
+POST https://localhost:9000/api/article/addComment
+Content-Type: application/json
+{
+    "content": "test",
+}

@@ -1,0 +1,7 @@
+POST http://localhost:9000/api/article/postArticle
+Content-Type: application/json
+
+{
+"title" : "Article 1",
+"content" : "Content of article 1"
+}
