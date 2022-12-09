@@ -67,8 +67,7 @@ module.exports.deleteArticle = async (articleId) => {
 
 
 module.exports.AddACommentOnTheArticle = async (commentInfo) => {
-    try {
-        //const { articleId, content, Owner } = commentInfo;
+    try{
         const article = await Article.findOne({
             _id: articleId
         });
@@ -86,6 +85,21 @@ module.exports.AddACommentOnTheArticle = async (commentInfo) => {
         throw err.message;
     }
 }
+//     try{
+//         const articleID = await Article.findOne({
+//             _id: articleId
+//         });
+//         const articleComment = new ArticleComment({
+//             Owner: commentInfo.Owner,
+//             Article: articleID,
+//             Comment: commentInfo.content
+//     });
+//     await articleComment.save();
+// } catch (err) {
+//     throw new Error("Error While Adding Comment");
+//     //error=err.message;
+// }
+// }
 
 module.exports.GetArticleComments = async (commentInfo) => {
     try {

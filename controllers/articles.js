@@ -52,14 +52,24 @@ module.exports.deleteArticle = async (req, res) => {
 
 
 module.exports.addComment = async (req, res) => {
-    try {
-        const commentInfo = req.body;
-        const comment = await articleService.AddACommentOnTheArticle(commentInfo);
-        res.status(202).send({ message: "Comment added successfully" });
-        return comment;
-    } catch (err) {
-        res.status(500).json({ message: err.message });
-    }
+    const userId = jwt.verify(req.headers.authorization.split(' ')[1], process.env.JWT_SECRET).userId;
+    const articleID = jwt.verify(req.headers.authorization.split(' ')[1], process.env.JWT_SECRET).articleId;
+    const articleCommentInfo = {
+        Owner: userId,
+        Article: articleID,
+        Comment: req.body.comment
+      };
+      try {
+        const createdArticle = await articleService.AddACommentOnTheArticle(articleInfo);
+        return res.status(201).send({
+        msg: 'Comment Added Successfully.',
+       // articleId: createdArticle._id
+        });
+      } catch (err) {
+        return res.status(500).send({
+          error: err.message
+        });
+      }
 }
 
 module.exports.GetArticleComments = async (req, res) => {

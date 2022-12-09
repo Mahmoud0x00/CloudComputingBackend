@@ -23,4 +23,5 @@ const ArticleCommentSchema = new Schema({
         type: Number,
         default: 0
     }
+    
 });
