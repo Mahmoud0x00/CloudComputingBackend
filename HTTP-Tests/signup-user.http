@@ -2,8 +2,8 @@ POST http://localhost:9000/api/auth/register
 Content-Type: application/json
 
 {
-  "name": "AhmedSupportAgent2",
-  "email": "ahmedsupportagen2t@users.com",
+  "name": "AhmedSupportAgent4",
+  "email": "ahmedsupportagent4@users.com",
   "userType": "supportagent",
   "password": "ahmed123"
 }

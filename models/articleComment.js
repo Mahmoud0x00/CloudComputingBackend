@@ -25,3 +25,5 @@ const ArticleCommentSchema = new Schema({
     }
     
 });
+
+module.exports = model('ArticleComment', ArticleCommentSchema);

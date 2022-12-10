@@ -1,0 +1,8 @@
+
+PUT http://localhost:9000/api/article/updateComment/639435ed31cccc10d3c7b67f/639453a401f706feb7a579ee
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2MzkzMWNmNmFlY2ZhMjg1YWRiMjdmYmEiLCJ1c2VyVHlwZSI6InN1cHBvcnRhZ2VudCIsImVtYWlsIjoic3VwcG9ydGFnZW50MUBzdXBwb3J0YWdlbnRzLmNvbSIsImlhdCI6MTY3MDY2ODg3OSwiZXhwIjoxNjcwNjcyNDc5fQ.PiGyyE1nSCegasL-dhReqnBnUW34vBEjNV8cX-EVwxk
+Content-Type: application/json
+
+{
+    "Comment": "This is a comment 55"
+}

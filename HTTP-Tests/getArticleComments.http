@@ -1,1 +1,3 @@
-GET http://localhost:9000/api/article/getArticleComments
+GET http://localhost:9000/api/article/getArticleComments/639435ed31cccc10d3c7b67f
+Content-Type: application/json
+

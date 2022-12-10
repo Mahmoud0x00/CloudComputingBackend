@@ -38,12 +38,6 @@ const ArticleSchema = new Schema({
         type: Number,
         default: 0
     }
-
-    // commentID: {    
-    //     type: Schema.Types.ObjectId,
-    //     ref: 'Comment',
-    //     required: true
-    // }
     
 });
 

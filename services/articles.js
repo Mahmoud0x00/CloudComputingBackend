@@ -1,8 +1,10 @@
+const article = require('../models/article');
 const Article = require('../models/article');
-const ArticleComment = require('../models/articleComment');
+const articleComment = require('../models/articleComment');
+//const ArticleComment = require('../models/articleComment');
 
 
-
+//Sha8aala
 module.exports.GetArticles = async (req, res) => {
     try {
         const articles = await Article.find();
@@ -12,7 +14,7 @@ module.exports.GetArticles = async (req, res) => {
     }
 }
 
-
+//Sha8aala
 module.exports.WriteAnArticle = async (articleInfo) => {
     try {
         // const { title, content, OwnerID } = articleInfo;
@@ -29,210 +31,162 @@ module.exports.WriteAnArticle = async (articleInfo) => {
     }
 }
 
-
-module.exports.UpdateAnArticle = async (articleInfo) => {
+//Sha8aala
+module.exports.GetArticle = async (articleId) => {
     try {
-        //const { articleId, title, content } = articleInfo;
         const article = await Article.findOne({
-            _id: articleInfo.articleId
-        });
-        if (article) {
-            article.title = articleInfo.title;
-            article.content = articleInfo.content;
-            await article.save();
-        } else {
-            throw new Error("Article does not exist");
-        }
-    } catch (err) {
-        throw err.message;
+         _id: articleId
+        }).populate('Owner');
+        return article;
+      } catch (err) {
+        throw new Error('Could not find Article.');
+      }
+}
+
+
+module.exports.UpdateAnArticle = async (articleid, title, content, userID) => {
+
+    const article = await Article.findOne ({
+        _id: articleid
+    });
+    if (article) {
+        article.title = title;
+        article.content = content;
+        article.Owner = userID;
+        await article.save();
+    } else {
+        throw new Error("Article does not exist");
     }
 }
+
+
+    
 
 
 module.exports.deleteArticle = async (articleId) => {
     try {
-        const article = await Article.findOne({
-            _id: articleId
-        });
-        if (article) {
-            await article.remove();
-        } else {
-            throw new Error("Article does not exist");
-        }
-    } catch (err) {
-        throw err.message;
-    }
+        await Article.deleteOne({ _id: articleId });
+      } catch (err) {
+        throw new Error('Could not remove Article.');
+      }
+   
 }
 
 
 
-module.exports.AddACommentOnTheArticle = async (commentInfo) => {
-    try{
-        const article = await Article.findOne({
-            _id: articleId
-        });
-        if (article) {
-            const comment = new ArticleComment({
-                content: commentInfo.comment,
-                Owner: commentInfo.OwnerID
-            });
-            article.comments.push(comment);
-            await article.save();
-        } else {
-            throw new Error("Article does not exist");
-        }
-    } catch (err) {
-        throw err.message;
-    }
-}
-//     try{
-//         const articleID = await Article.findOne({
-//             _id: articleId
-//         });
-//         const articleComment = new ArticleComment({
-//             Owner: commentInfo.Owner,
-//             Article: articleID,
-//             Comment: commentInfo.content
-//     });
-//     await articleComment.save();
-// } catch (err) {
-//     throw new Error("Error While Adding Comment");
-//     //error=err.message;
-// }
-// }
-
-module.exports.GetArticleComments = async (commentInfo) => {
+module.exports.AddACommentOnTheArticle = async (commentmsg, userID, articleID) => {
     try {
-        // const { articleId, commentId } = commentInfo;
-        const article = await Article.findOne({
-            _id: commentInfo.articleId
+
+        const comment = new articleComment({
+            Comment: commentmsg,
+            Article: articleID,
+            Owner: userID
         });
-        if (article) {
-            const comment = article.comments.find((comment) => {
-                return comment._id == commentInfo.commentId;
-            });
-            return comment;
-        } else {
-            throw new Error("Article does not exist");
-        }
+        await comment.save();
     } catch (err) {
-        throw err.message;
+        throw new Error("Error while adding comment");
+
+    }
+}
+    
+module.exports.GetArticleComments = async (artid) => {
+    try {
+        const article = await Article.findOne({
+            _id: artid
+        }).populate('comments');
+        return article.comments;
+    } catch (err) {
+        throw new Error("Error while getting comments");
     }
 }
 
 
 
-module.exports.EditACommentOnTheArticle = async (commentInfo) => {
+module.exports.EditACommentOnTheArticle = async (commentt, articleid, userid, commentid) => {
+    const comment = await articleComment.findOne({
+        _id: commentid,
+    });
+
+    if (comment) {
+        comment.Comment = commentt;
+        comment.Article = articleid;
+        comment.Owner = userid;
+        await comment.save();
+    } else {
+        throw new Error("Comment does not exist");
+    }
+
+}
+
+
+
+module.exports.DeleteACommentOnTheArticle = async (articleID, commentID) => {
     try {
-        //const { articleId, commentId, content } = commentInfo;
-        const article = await Article.findOne({
-            _id: commentInfo.articleId
+       const comment = await articleComment.findOne({
+            _id: commentID,
+            Article: articleID
         });
-        if (article) {
-            const comment = article.comments.find((comment) => {
-                return comment._id == commentInfo.commentId;
-            });
-            comment.content = commentInfo.content;
-            await article.save();
+        if (comment) {
+            await comment.remove();
         } else {
-            throw new Error("Article does not exist");
+            throw new Error("Comment does not exist");
         }
+
     } catch (err) {
-        throw err.message;
+        throw new Error("Error while deleting comment");
     }
 }
 
 
 
-module.exports.DeleteACommentOnTheArticle = async (commentInfo) => {
-    try {
-        // const { articleId, commentId } = commentInfo;
-        const article = await Article.findOne({
-            _id: commentInfo.articleId
-        });
-        if (article) {
-            const comment = article.comments.find((comment) => {
-                return comment._id == commentInfo.commentId;
-            });
-            article.comments.pull(comment);
-            await article.save();
-        } else {
-            throw new Error("Article does not exist");
-        }
-    } catch (err) {
-        throw err.message;
+module.exports.AddALikeOnTheArticle = async (articleID) => {
+
+    const article = await Article.findOne({
+        _id: articleID
+    });
+    if (article) {
+        article.Likes += 1;
+        await article.save();
+    } else {
+        throw new Error("Article does not exist");
     }
 }
 
 
-
-module.exports.AddALikeOnTheArticle = async (likeInfo) => {
-    try {
-        //const { articleId, like } = likeInfo;
-        const article = await Article.findOne({
-            _id: likeInfo.articleId
-        });
-        if (article) {
-            article.Likes += 1;
-            await article.save();
-        } else {
-            throw new Error("Article does not exist");
-        }
-    } catch (err) {
-        throw err.message;
+module.exports.DeleteALikeOnTheArticle = async (articleID) => {
+    const article = await Article.findOne({
+        _id: articleID
+    });
+    if (article) {
+        article.Likes -= 1;
+        await article.save();
+    } else {
+        throw new Error("Article does not exist");
     }
 }
 
 
-module.exports.DeleteALikeOnTheArticle = async (likeInfo) => {
-    try {
-        //const { articleId, likeId } = likeInfo;
-        const article = await Article.findOne({
-            _id: likeInfo.articleId
-        });
-        if (article) {
-            article.Likes -= 1;
-            await article.save();
-        } else {
-            throw new Error("Article does not exist");
-        }
-    } catch (err) {
-        throw err.message;
+module.exports.AddADislikeOnTheArticle = async (articleID) => {
+    const article = await Article.findOne({
+        _id: articleID
+    });
+    if (article) {
+        article.DisLikes += 1;
+        await article.save();
+    } else {
+        throw new Error("Article does not exist");
     }
 }
 
 
-module.exports.AddADislikeOnTheArticle = async (dislikeInfo) => {
-    try {
-        // const { articleId, dislike } = dislikeInfo;
-        const article = await Article.findOne({
-            _id: dislikeInfo.articleId
-        });
-        if (article) {
-            article.dislikes += 1;
-            await article.save();
-        } else {
-            throw new Error("Article does not exist");
-        }
-    } catch (err) {
-        throw err.message;
-    }
-}
-
-
-module.exports.DeleteADislikeOnTheArticle = async (dislikeInfo) => {
-    try {
-        // const { articleId, dislikeId } = dislikeInfo;
-        const article = await Article.findOne({
-            _id: dislikeInfo.articleId
-        });
-        if (article) {
-            article.dislikes -= 1;
-            await article.save();
-        } else {
-            throw new Error("Article does not exist");
-        }
-    } catch (err) {
-        throw err.message;
+module.exports.DeleteADislikeOnTheArticle = async (articleID) => {
+    const article = await Article.findOne({
+        _id: articleID
+    });
+    if (article) {
+        article.DisLikes -= 1;
+        await article.save();
+    } else {
+        throw new Error("Article does not exist");
     }
 }
