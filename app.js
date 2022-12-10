@@ -9,6 +9,8 @@ const authenitcationRouter = require('./routes/auth');
 const ticketRouter = require('./routes/ticket')
 const userRouter = require('./routes/user');
 
+const NotificationsRouter = require('./routes/notifications');
+
 // Let the dotenv package read and parse environment variables in the ./config/.env file
 dotenv.config({
   path: './config/.env'
@@ -32,6 +34,8 @@ app.use(cors());
 app.use('/api/auth', authenitcationRouter);
 app.use('/api/user', userRouter);
 app.use('/api/ticket',ticketRouter);
+
+app.use('/api/notifications', NotificationsRouter);
 
 app.listen(PORT, async () => {
   console.log(`Server has been started and is listening to port ${PORT}`);

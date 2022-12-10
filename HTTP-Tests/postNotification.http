@@ -1,0 +1,8 @@
+POST http://localhost:9000/api/notifications
+Content-Type: application/json
+
+{
+    "NotificationType": "New ticket update",
+    "NotificationDetails": "You got a reply",
+    "NotificationTime": "1 hours ago"
+}
