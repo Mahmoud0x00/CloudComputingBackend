@@ -2,15 +2,22 @@
 const TicketModel = require('../models/ticket');
 
 const AttachementModel = require('../models/attachment');
+const NotificationsService = require('../services/notifications');
 
 const jwt = require('jsonwebtoken');
 const CommentModel = require('../models/comment');
-module.exports.createTicket = async (title,description,userId) => {
+
+module.exports.createTicket = async (title,description,userId,email) => {
         const ticket = new TicketModel({
             title: title,
             body: description,
             Owner: userId
         });
+        const ticketInfo = {
+            ticketName: title,
+            email: email
+        }
+        await NotificationsService.SlackAgents(ticketInfo);
 
         await ticket.save();
 }

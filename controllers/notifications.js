@@ -1,9 +1,11 @@
 const NotificationsModel = require('../models/notifications');
 const NotificationsService = require('../services/notifications');
+const jwt = require('jsonwebtoken');
 
 module.exports.getNotification = async(req, res) => {
+    const userId = jwt.verify(req.headers.authorization.split(' ')[1], process.env.JWT_SECRET).userId;
     try {
-        const notifications = await NotificationsService.findAllNotifications();
+        const notifications = await NotificationsService.findAllNotifications(userId);
         res.send({ notifications });
     } catch (err) {
         res.status(500); //server error
@@ -16,10 +18,12 @@ module.exports.getNotification = async(req, res) => {
 //Route handler function that gets the notification info from the req. body
 //and pass it to the service method
 module.exports.postNotification = async (req, res) => {
+    const userId = jwt.verify(req.headers.authorization.split(' ')[1], process.env.JWT_SECRET).userId;
     const notificationsInfo = {
         NotificationType: req.body.NotificationType,
         NotificationDetails: req.body.NotificationDetails,
-        NotificationTime: req.body.NotificationTime
+        NotificationTime: req.body.NotificationTime,
+        Owner: userId
     };
     try {
         const notify = await NotificationsService.addToNotifications(notificationsInfo);

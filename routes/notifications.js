@@ -4,9 +4,11 @@ const NotificationsController = require('../controllers/notifications');
 
 const NotificationsRouter = Router();
 
-NotificationsRouter.get('/', NotificationsController.getNotification);
+const isAuthenticated = require('../middleware/auth');
+
+NotificationsRouter.get('/',isAuthenticated, NotificationsController.getNotification);
 
 //Registering the route handler for POST requests on notifications route '/'
-NotificationsRouter.post('/', NotificationsController.postNotification);
+NotificationsRouter.post('/',isAuthenticated, NotificationsController.postNotification);
 
 module.exports = NotificationsRouter;
