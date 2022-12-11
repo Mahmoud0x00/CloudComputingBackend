@@ -1,0 +1,9 @@
+POST http://localhost:9000/api/article/postArticle
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2MzkzMWNmNmFlY2ZhMjg1YWRiMjdmYmEiLCJ1c2VyVHlwZSI6InN1cHBvcnRhZ2VudCIsImVtYWlsIjoic3VwcG9ydGFnZW50MUBzdXBwb3J0YWdlbnRzLmNvbSIsImlhdCI6MTY3MDY1NzQ5MywiZXhwIjoxNjcwNjYxMDkzfQ.6eF3r02YVe0W4vd8lClrPysPmVLQh0F8-cSlI_Dam6c
+
+{
+"title" : "Article 7",
+"content" : "Content of article 7"
+
+}

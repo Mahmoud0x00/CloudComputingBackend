@@ -3,11 +3,12 @@ const dotenv = require('dotenv');
 const path = require('path');
 const cors = require('cors');
 const helmet = require('helmet');
-// import the function that ininitiates a DB connection.
 const initiateDBConnection = require('./config/db');
 const authenitcationRouter = require('./routes/auth');
 const ticketRouter = require('./routes/ticket')
 const userRouter = require('./routes/user');
+
+const articleRouter = require('./routes/article');
 
 // Let the dotenv package read and parse environment variables in the ./config/.env file
 dotenv.config({
@@ -33,8 +34,12 @@ app.use('/api/auth', authenitcationRouter);
 app.use('/api/user', userRouter);
 app.use('/api/ticket',ticketRouter);
 
+
+app.use('/api/article', articleRouter);
+
 app.listen(PORT, async () => {
   console.log(`Server has been started and is listening to port ${PORT}`);
   // Call the asynchronous function to initiate the DB connection once the server starts listening.
   await initiateDBConnection();
 });
+  

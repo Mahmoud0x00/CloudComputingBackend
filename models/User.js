@@ -17,7 +17,7 @@ const UserSchema = new Schema({
         type: 'String',
         enum: ['supportagent', 'customer'],
         required: true,
-        default: 'customer'
+        //default: 'customer'
     },
     creationDate: {
         type: 'Date',
