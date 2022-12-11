@@ -91,10 +91,10 @@ module.exports.AddACommentOnTheArticle = async (commentmsg, userID, articleID) =
     
 module.exports.GetArticleComments = async (artid) => {
     try {
-        const article = await Article.findOne({
-            _id: artid
-        }).populate('comments');
-        return article.comments;
+        const comment = await articleComment.find({
+            Article : artid
+        });
+        return comment;
     } catch (err) {
         throw new Error("Error while getting comments");
     }
