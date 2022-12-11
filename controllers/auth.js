@@ -93,7 +93,9 @@ module.exports.login = async (req, res) => {
                 const token = await AuthenticationService.generateJWT(user);
                 res.status(200).json({
                     message: "Login successful",
-                    jwt: token
+                    jwt: token,
+                    userId: user._id,
+                    userType: user.userType
                 });
             }else{
                 res.status(401).json({

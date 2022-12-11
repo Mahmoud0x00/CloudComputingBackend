@@ -67,7 +67,6 @@ module.exports.AddComment = async (req,comment,userId,ticketId,type) => {
 // DONE: instead of building a middleware to check if the user is the owner of the ticket, we can use the mongoose built in function ($eq) to check if the user is the owner of the ticket
 module.exports.getComments = async (req,ticketId) => {
         const userRole = jwt.verify(req.headers.authorization.split(' ')[1], process.env.JWT_SECRET).userType;
-        const userId = jwt.verify(req.headers.authorization.split(' ')[1], process.env.JWT_SECRET).userId;
         let comments;
         if(userRole === 'supportagent'){
             comments = await CommentModel.find({
@@ -76,18 +75,17 @@ module.exports.getComments = async (req,ticketId) => {
         }else{
             comments = await CommentModel.find({
                 Ticket: ticketId,
-                Type: 'external',
-                Owner: {$eq: userId}
-            }).select('-__v -Ticket -Type');
+                Type: 'external'
+            }).select('-__v -Ticket -Type').populate('Owner', 'name');
         }
         return comments;
 }
 
 // TODO: Add validation to check if the user is the owner of the ticket
-module.exports.deleteComment = async (commentId) => {
+module.exports.deleteComment = async (userId,commentId) => {
         const comment = await CommentModel.findOne({
             _id: commentId,
-            userId
+            userId: {$eq: userId}
         });
         if(comment){
             await comment.delete();

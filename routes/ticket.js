@@ -21,7 +21,7 @@ TicketController.getTickets);
 ticketRouter.get('/retrive/:ticketId',isAuthenticated,
 TicketController.getTicket);
 
-ticketRouter.post('/comment',isAuthenticated,
+ticketRouter.post('/:ticketId/comment',isAuthenticated,
 ticketValidator.validateCommentData(),
 TicketController.postComment);
 
