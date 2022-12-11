@@ -1,7 +1,7 @@
-POST http://localhost:9000/api/article/addComment/639435ed31cccc10d3c7b67f
+POST http://localhost:9000/api/article/addComment/6391981fb0edee6f53007526
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2MzkzMWNmNmFlY2ZhMjg1YWRiMjdmYmEiLCJ1c2VyVHlwZSI6InN1cHBvcnRhZ2VudCIsImVtYWlsIjoic3VwcG9ydGFnZW50MUBzdXBwb3J0YWdlbnRzLmNvbSIsImlhdCI6MTY3MDY2NDI2OSwiZXhwIjoxNjcwNjY3ODY5fQ.ewqVNvkJtPA-E5F1HxVXRbLxp5MBnh6PnFRjZCTNBk4
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2MzkzMWNmNmFlY2ZhMjg1YWRiMjdmYmEiLCJ1c2VyVHlwZSI6InN1cHBvcnRhZ2VudCIsImVtYWlsIjoic3VwcG9ydGFnZW50MUBzdXBwb3J0YWdlbnRzLmNvbSIsImlhdCI6MTY3MDc2Mzk0NCwiZXhwIjoxNjcwNzY3NTQ0fQ.Tu7_Y3a2fmeM5iyrvmld3au9kNIVAslM8KWgaTaMJTk
 
 {
-    "Comment": "This is a comment 1"
+    "Comment": "This is another comment on Article 1"
 }
