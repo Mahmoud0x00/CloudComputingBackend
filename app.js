@@ -1,5 +1,4 @@
 const express = require('express');
-const dotenv = require('dotenv');
 const path = require('path');
 const cors = require('cors');
 const helmet = require('helmet');
@@ -10,10 +9,7 @@ const userRouter = require('./routes/user');
 
 const articleRouter = require('./routes/article');
 
-// Let the dotenv package read and parse environment variables in the ./config/.env file
-dotenv.config({
-  path: './config/.env'
-});
+
 
 // Access the port environment variable using process.env
 const PORT = process.env.PORT;

@@ -1,8 +1,0 @@
-PUT http://localhost:9000/api/article/updateArticle/6393190ccfcce1971b706e4b
-Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2MzkzMWNmNmFlY2ZhMjg1YWRiMjdmYmEiLCJ1c2VyVHlwZSI6InN1cHBvcnRhZ2VudCIsImVtYWlsIjoic3VwcG9ydGFnZW50MUBzdXBwb3J0YWdlbnRzLmNvbSIsImlhdCI6MTY3MDY2NDI2OSwiZXhwIjoxNjcwNjY3ODY5fQ.ewqVNvkJtPA-E5F1HxVXRbLxp5MBnh6PnFRjZCTNBk4
-
-{
-"title" : "Article 5.3",
-"content" : "Content of article 5.2"
-}

@@ -1,7 +1,0 @@
-PUT http://localhost:9000/api/ticket/comment/638a3abccde16d9047638bee HTTP/1.1
-Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2MzhhMzY5NmViOWRjZGViYTEwNjM5OWEiLCJ1c2VyVHlwZSI6ImN1c3RvbWVyIiwiZW1haWwiOiJtYWhtb3VkZGRAdXNlcnMuY29tIiwiaWF0IjoxNjcwMDA2MDUzLCJleHAiOjE2NzAwMDk2NTN9.fXZ34_0gb3SR5-qdt4qkC18jIV0FXJAN1a2Ivefa6Pc
-
-{
-    "newMessage": "This is a new comment"
-}

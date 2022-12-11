@@ -1,7 +1,0 @@
-POST http://localhost:9000/api/article/addComment/6391981fb0edee6f53007526
-Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2MzkzMWNmNmFlY2ZhMjg1YWRiMjdmYmEiLCJ1c2VyVHlwZSI6InN1cHBvcnRhZ2VudCIsImVtYWlsIjoic3VwcG9ydGFnZW50MUBzdXBwb3J0YWdlbnRzLmNvbSIsImlhdCI6MTY3MDc2Mzk0NCwiZXhwIjoxNjcwNzY3NTQ0fQ.Tu7_Y3a2fmeM5iyrvmld3au9kNIVAslM8KWgaTaMJTk
-
-{
-    "Comment": "This is another comment on Article 1"
-}
