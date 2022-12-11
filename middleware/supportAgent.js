@@ -8,13 +8,10 @@ const isSupportAgent = async (req, res, next) => {
                 const decoded = jwt.verify(token, process.env.JWT_SECRET);
                 const user = await userModel.findById(decoded.userId);
                 if(user){
-                    console.log(user);
                     if(user.userType === "supportagent"){
-                        console.log("supportagent");
                         req.user = user;
                         next();
                     }else{
-                        console.log(user.userType)
                         res.status(401).send({
                             error: "You are not authorized to access this resource"
                         });
