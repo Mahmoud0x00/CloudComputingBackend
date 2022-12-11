@@ -12,8 +12,6 @@ module.exports.postTicket = async (req, res) => {
     try {
         const userId = jwt.verify(req.headers.authorization.split(' ')[1], process.env.JWT_SECRET).userId;
         const { title, description } = req.body;
-        console.log(title);
-        console.log(description);
         await TicketService.createTicket(title, description,userId);
         res.status(201).json({
             message: "Ticket created successfully"});
@@ -27,7 +25,6 @@ module.exports.postTicket = async (req, res) => {
 
 module.exports.getTickets = async (req, res) => {
     try {
-        // TODO: replace userID with the actutal userID from JWT token
         const userId = jwt.verify(req.headers.authorization.split(' ')[1], process.env.JWT_SECRET).userId;
         const tickets = await TicketService.getTickets(userId);
         res.status(200).json({
@@ -44,7 +41,8 @@ module.exports.getTicket = async (req, res) => {
     try {
         // TODO Authorize user to see if he is the owner of the ticket
         const ticketId = req.params.ticketId;
-        const ticket = await TicketService.getTicket(ticketId);
+        const userId = jwt.verify(req.headers.authorization.split(' ')[1], process.env.JWT_SECRET).userId;
+        const ticket = await TicketService.getTicket(userId,ticketId);
         res.status(200).json({
             ticket: ticket
         });
@@ -65,8 +63,9 @@ module.exports.postComment = async (req, res) => {
     try {
         // TODO: replace userID with the actutal userID from JWT token
         const userId = jwt.verify(req.headers.authorization.split(' ')[1], process.env.JWT_SECRET).userId;
-        const {ticketId, comment, type } = req.body;
-        await TicketService.AddComment(req,comment,userId,ticketId,type);
+        const ticketId = req.params.ticketId;
+        const {comment} = req.body;
+        await TicketService.AddComment(req,comment,userId,ticketId);
         res.status(201).json({
             message: "Comment added successfully"});
     }catch(err){
@@ -94,7 +93,8 @@ module.exports.getComments = async (req, res) => {
 module.exports.deleteComment = async (req, res) => {
     try {
         const commentId = req.params.commentId;
-        await TicketService.deleteComment(commentId);
+        const userId = jwt.verify(req.headers.authorization.split(' ')[1], process.env.JWT_SECRET).userId;
+        await TicketService.deleteComment(userId,commentId);
         res.status(200).json({
             message: "Comment deleted successfully"
         });
@@ -151,6 +151,21 @@ module.exports.getAttachments = async (req, res) => {
         const userType = jwt.verify(req.headers.authorization.split(' ')[1], process.env.JWT_SECRET).userType;
         const attachments = await TicketService.findAttachments(userId,userType,ticketId);
         res.status(200).json(attachments);
+    }catch(err){
+        res.status(500).send({
+            error: err.message
+    });
+    }
+}
+
+module.exports.deleteAttachment = async (req, res) => {
+    try {
+        const attachmentId = req.params.attachmentId;
+        const userId = jwt.verify(req.headers.authorization.split(' ')[1], process.env.JWT_SECRET).userId;
+        await TicketService.deleteAttachment(userId,attachmentId);
+        res.status(200).json({
+            message: "Attachment deleted successfully"
+        });
     }catch(err){
         res.status(500).send({
             error: err.message

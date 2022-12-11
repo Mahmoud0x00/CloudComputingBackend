@@ -21,7 +21,7 @@ TicketController.getTickets);
 ticketRouter.get('/retrive/:ticketId',isAuthenticated,
 TicketController.getTicket);
 
-ticketRouter.post('/comment',isAuthenticated,
+ticketRouter.post('/:ticketId/comment',isAuthenticated,
 ticketValidator.validateCommentData(),
 TicketController.postComment);
 
@@ -40,4 +40,7 @@ TicketController.postAttachment);
 
 ticketRouter.get('/:ticketId/attachments',isAuthenticated,
 TicketController.getAttachments);
+
+ticketRouter.delete('/attachment/:attachmentId',isAuthenticated,
+TicketController.deleteAttachment);
 module.exports = ticketRouter;

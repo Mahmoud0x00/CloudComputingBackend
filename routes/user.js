@@ -5,6 +5,7 @@ const authenticationController = require('../controllers/auth');
 const CustomerValidator = require('../validators/customer');
 const userRouter = Router();
 
+userRouter.use(isAuthenticated);
 
 userRouter.post('/edit',isAuthenticated,
 CustomerValidator.validateEditCustomerData(),

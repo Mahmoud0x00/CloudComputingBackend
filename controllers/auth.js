@@ -16,7 +16,7 @@ module.exports.postUser = async (req, res) => {
         const doesCustomerExist = await AuthenticationService.doesCustomerExist(email);
         if(doesCustomerExist){
             res.status(400).json({
-                message: "User already exists"});
+                error: "User already exists"});
         }else{
             await AuthenticationService.registerCustomer({name, email, password});
             res.status(201).json({
@@ -93,7 +93,9 @@ module.exports.login = async (req, res) => {
                 const token = await AuthenticationService.generateJWT(user);
                 res.status(200).json({
                     message: "Login successful",
-                    jwt: token
+                    jwt: token,
+                    userId: user._id,
+                    userType: user.userType
                 });
             }else{
                 res.status(401).json({

@@ -4,7 +4,7 @@ const jwt = require('jsonwebtoken');
 const userModel = require('../models/User');
 
 const isAuthenticated = async (req, res, next) => {
-try{
+
     if(req.headers.authorization){
         const token = req.headers.authorization.split(' ')[1];
         try {
@@ -27,9 +27,7 @@ try{
     res.status(401).send({
         error: "You should be logged in to access this resource"
     });
-    }} catch (err) {
-        res.status(500).send({ message: err.message });
-    }
+}
 };
 
 module.exports = isAuthenticated;
