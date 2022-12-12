@@ -11,4 +11,6 @@ NotificationsRouter.get('/',isAuthenticated, NotificationsController.getNotifica
 //Registering the route handler for POST requests on notifications route '/'
 NotificationsRouter.post('/',isAuthenticated, NotificationsController.postNotification);
 
+NotificationsRouter.delete('/:notificationID',isAuthenticated, NotificationsController.removeNotification);
+
 module.exports = NotificationsRouter;

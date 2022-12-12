@@ -16,15 +16,6 @@ module.exports.SlackAgents = async (ticketInfo) => {
     }
 };
 
-module.exports.viewAllNotifications = async () => {
-    try {
-        const notifications = await NotificationsModel.find();
-        return notifications;
-    } catch (err) {
-        throw new Error('Could not view new notifications');
-    }
-};
-
 module.exports.addToNotifications = async (notificationsInfo) => {
     try {
         const notification = new NotificationsModel({
@@ -49,4 +40,15 @@ module.exports.findAllNotifications = async (userId) => {
     } catch (err) {
         throw new Error('Could not view notifications');
     }
-}
+};
+
+module.exports.removeNotifications = async (notificationId) => {
+    const notification = await NotificationsModel.findOne({
+        _id: notificationId
+    });
+    if(notification){
+        await notification.delete();
+    }else{
+        throw new Error("Notification not found");
+    }
+  };

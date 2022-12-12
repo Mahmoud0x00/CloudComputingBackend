@@ -37,3 +37,17 @@ module.exports.postNotification = async (req, res) => {
         });
     }
 };
+
+module.exports.removeNotification = async (req, res) => {
+    const notificationID = req.params.notificationID;
+    try {
+      await NotificationsService.removeNotifications(notificationID);
+      return res.send({
+        msg: 'Notification deleted successfully.'
+      });
+    } catch (err) {
+      return res.status(500).send({
+        error: err.message
+      });
+    }
+  };
