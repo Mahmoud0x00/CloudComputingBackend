@@ -11,8 +11,9 @@ module.exports.postTicket = async (req, res) => {
     }else{
     try {
         const userId = jwt.verify(req.headers.authorization.split(' ')[1], process.env.JWT_SECRET).userId;
+        const email = jwt.verify(req.headers.authorization.split(' ')[1], process.env.JWT_SECRET).email;
         const { title, description } = req.body;
-        await TicketService.createTicket(title, description,userId);
+        await TicketService.createTicket(title, description,userId,email);
         res.status(201).json({
             message: "Ticket created successfully"});
     }catch(err){

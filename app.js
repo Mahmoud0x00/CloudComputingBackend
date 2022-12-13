@@ -6,6 +6,7 @@ const initiateDBConnection = require('./config/db');
 const authenitcationRouter = require('./routes/auth');
 const ticketRouter = require('./routes/ticket')
 const userRouter = require('./routes/user');
+const NotificationsRouter = require('./routes/notifications');
 
 const articleRouter = require('./routes/article');
 
@@ -30,6 +31,7 @@ app.use('/api/auth', authenitcationRouter);
 app.use('/api/user', userRouter);
 app.use('/api/ticket',ticketRouter);
 
+app.use('/api/notifications', NotificationsRouter);
 
 app.use('/api/article', articleRouter);
 
